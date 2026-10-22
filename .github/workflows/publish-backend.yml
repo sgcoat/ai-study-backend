@@ -7,7 +7,7 @@ on:
         description: Release tag (use a new value for each release)
         type: string
         required: true
-        default: "1.0.0"
+        default: "1.0.1"
 
 permissions:
   contents: read

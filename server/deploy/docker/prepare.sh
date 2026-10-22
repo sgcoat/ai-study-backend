@@ -8,9 +8,9 @@ domain=''
 
 usage() {
   cat <<'TEXT'
-Usage: bash prepare.sh --image devcksgur/ai-study-backend:1.0.0 [--domain api.your-domain.com]
+Usage: bash prepare.sh --image devcksgur/ai-study-backend:1.0.1 [--domain api.your-domain.com]
 Creates .env and server.env only when absent; existing secrets are preserved.
-Fill Gemini and SMTP values in server.env before starting Compose.
+Fill SMTP values in server.env before starting Compose. AI is disabled by default.
 TEXT
 }
 
@@ -69,4 +69,4 @@ if [[ ! -e "$deploy_dir/server.env" ]]; then
 else
   printf 'Preserved existing server.env and AUTH_SECRET.\n'
 fi
-printf 'Fill Gemini/SMTP settings in server.env. Never commit or upload this file.\n'
+printf 'Fill SMTP settings in server.env. AI_FEATURES_ENABLED=false needs no AI key. Never commit or upload this file.\n'

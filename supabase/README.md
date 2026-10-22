@@ -1,4 +1,8 @@
-# 카드 등록 없는 클라우드 준비
+# 카드 등록 없는 클라우드 API
+
+## 클라우드 API 구현·배포
+
+`ai-study-api`와 `ai-study-worker`, Postgres 및 비공개 사진 버킷을 추가했습니다. 앱 연결은 Supabase 주소를 사용하는 `pnpm dev:cloud`로 실행합니다. [구조·실행·배포 방법](DEPLOYMENT.md), [현재 배포와 확인 범위](DEPLOYMENT_STATUS.md)를 참고하세요. API 함수는 사용자가 승인한 앱 세션 검증을 사용하고, 작업 실행 함수는 서버 JWT와 서버 키를 검증합니다.
 
 ## SMTP·OTP 설정 완료
 
@@ -20,9 +24,9 @@
 
 ## 무료 구성의 범위
 
-서버 API·Postgres·사진 저장소는 Supabase Free의 Edge Functions·Database·Storage로 이전할 계획입니다. Firebase는 Spark 범위에서 준비했습니다. Firebase의 Cloud Functions/Cloud Run은 결제 계정이 필요하므로 이번 무료 구성에서는 사용하지 않습니다. 현재 네이티브 Expo 앱은 Firebase Hosting에 올리는 웹사이트가 아닙니다. Firebase 프로젝트 생성만으로 앱이나 API가 배포되지는 않습니다.
+서버 API·Postgres·사진 저장소는 Supabase Free의 Edge Functions·Database·Storage를 사용합니다. Firebase는 Spark 범위에서 준비했습니다. Firebase의 Cloud Functions/Cloud Run은 결제 계정이 필요하므로 이번 무료 구성에서는 사용하지 않습니다. 현재 네이티브 Expo 앱은 Firebase Hosting에 올리는 웹사이트가 아닙니다.
 
-현재 Fastify API는 SQLite와 로컬 사진 저장소, 프로세스 내부 작업 워커를 사용합니다. Supabase Edge Functions로 옮기려면 HTTP 처리·저장소·인증·AI 작업 수명을 변경해야 합니다. Docker Hub의 `1.0.0` 이미지를 Supabase에 그대로 실행할 수는 없습니다. 로컬 API와 앱 연결 주소는 이 준비 단계에서 바꾸지 않았습니다.
+로컬 Fastify API는 SQLite와 로컬 사진 저장소, 프로세스 내부 작업 워커를 사용합니다. 클라우드에는 기존 앱 API 형식을 유지하는 별도 Edge API와 영구 작업 저장을 구현했습니다. Docker Hub의 `1.0.0` 이미지를 Supabase에 그대로 실행하는 구성은 아닙니다. 앱의 공개 API 주소를 클라우드로 설정했고 이전 환경 파일은 로컬 `work/cloud-env-backups/`에 보관했습니다.
 
 ## SMTP 설정
 
@@ -58,12 +62,11 @@ Authentication → Sign In / Providers → Email에서 기본 OTP 8자리·만�
 
 ## 이어서 필요한 작업
 
-1. 기존 앱의 인증 API 계약을 유지하는 Supabase API와 세션 처리 구현.
-2. SQLite 자료·요약·문제·풀이 기록을 Postgres로, 첨부 사진을 비공개 Storage로 이전.
-3. 202 작업 ID·폴링·중복 방지와 서버리스 실행 제한에 맞춘 AI 작업 처리 구현.
-4. 클라우드 API가 준비된 뒤 Expo의 API 주소를 전환하고 로그인·자료 흐름 확인.
+1. Expo를 클라우드 연결로 재시작한 뒤 로그인·자료 저장의 실제 앱 흐름 확인.
+2. 필요한 기존 로컬 자료의 별도 이전과 사용자 ID 매핑.
+3. 실제 Gemini 이용 시 서버 키·모델·무료 사용 범위 설정과 생성 흐름 확인.
 
-기존 로컬 데이터는 아직 새 프로젝트로 복사하지 않았습니다. SMTP와 프로젝트 생성만으로 위 이전 작업이 완료된 것은 아닙니다.
+기존 로컬 데이터는 새 프로젝트로 자동 복사하지 않았습니다. 클라우드 새 로그인에서 보이는 자료는 새 Postgres에 저장한 자료입니다.
 
 ## 공식 문서
 

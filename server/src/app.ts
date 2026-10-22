@@ -72,7 +72,8 @@ export async function createApp(config: Config, dependencies: AppDependencies = 
       reply.header('Cache-Control', 'no-store').header('X-Content-Type-Options', 'nosniff'); return payload;
     });
     app.get('/health', () => ({ status: 'ok', apiVersion: 'v1', serverMode: config.SERVER_MODE,
-      aiProvider: learning ? config.AI_PROVIDER : null, emailProvider: config.EMAIL_PROVIDER }));
+      aiProvider: learning ? (config.AI_FEATURES_ENABLED === 'false' ? 'disabled' : config.AI_PROVIDER) : null,
+      emailProvider: config.EMAIL_PROVIDER }));
     if (learning) app.get('/uploads/:id', async (request, reply) => {
       const { id } = parse(idSchema, request.params);
       const image = learning.materials.readSignedImage(id, request.query);
@@ -131,13 +132,15 @@ export async function createApp(config: Config, dependencies: AppDependencies = 
         });
         secured.get('/materials/:id/summaries', (request) => jobs.summarySnapshot(userId(request), parse(idSchema, request.params).id));
         secured.post('/materials/:id/summaries', (request, reply) => {
+          if (config.AI_FEATURES_ENABLED === 'false') throw new HttpError(503, 'AI_DISABLED', 'AI 기능은 현재 준비 중입니다. 자료 등록과 조회를 이용해 주세요.');
           parse(z.object({}).strict(), request.body);
           return reply.code(202).send(jobs.start(userId(request), parse(idSchema, request.params).id, 'SUMMARY', requestKey(request.headers['idempotency-key'])));
         });
         secured.get('/materials/:id/questions', (request) => jobs.questionSnapshot(userId(request), parse(idSchema, request.params).id));
         secured.post('/materials/:id/questions/generate', (request, reply) => {
-          const config = parse(generationSchema, request.body);
-          return reply.code(202).send(jobs.start(userId(request), parse(idSchema, request.params).id, 'QUESTIONS', requestKey(request.headers['idempotency-key']), config));
+          if (config.AI_FEATURES_ENABLED === 'false') throw new HttpError(503, 'AI_DISABLED', 'AI 기능은 현재 준비 중입니다. 자료 등록과 조회를 이용해 주세요.');
+          const generation = parse(generationSchema, request.body);
+          return reply.code(202).send(jobs.start(userId(request), parse(idSchema, request.params).id, 'QUESTIONS', requestKey(request.headers['idempotency-key']), generation));
         });
         secured.get('/jobs/:id', (request) => jobs.get(userId(request), parse(idSchema, request.params).id));
         secured.post('/questions/:id/attempts', { config: { rateLimit: { max: 30, timeWindow: 60000 } } }, async (request) => {

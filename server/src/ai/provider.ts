@@ -19,6 +19,10 @@ export interface AIProvider {
 }
 export function normalizeAnswer(value: string): string { return value.normalize('NFKC').trim().replace(/\s+/g, ' '); }
 export function createAIProvider(config: Config): AIProvider {
+  if (config.AI_FEATURES_ENABLED === 'false') {
+    const unavailable = async (): Promise<never> => { throw new AIServiceError('AI_DISABLED', 'AI 기능은 현재 준비 중입니다.'); };
+    return { modelInfo: 'disabled', summarize: unavailable, questions: unavailable, grade: unavailable };
+  }
   if (config.AI_PROVIDER === 'gemini') return new GeminiAIProvider(config);
   return config.AI_PROVIDER === 'mock' ? new MockAIProvider(config.MOCK_AI_DELAY_MS) : new OpenAIProvider(config);
 }

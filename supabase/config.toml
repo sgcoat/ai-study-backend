@@ -1,0 +1,19 @@
+project_id = "ai-study-backend"
+
+# Existing mobile sessions are opaque tokens, verified against a hashed session
+# table by the handler. /auth/login and /auth/verify are intentionally public.
+# This setting does NOT disable the handler's authentication/ownership checks.
+[functions.ai-study-api]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/ai-study-api/index.ts"
+
+# A separate worker gets its own wall-clock budget. It accepts ONLY an injected
+# service key, never a publishable key or a mobile user's token.
+[functions.ai-study-worker]
+enabled = true
+verify_jwt = true
+entrypoint = "./functions/ai-study-worker/index.ts"
+
+[edge_runtime]
+policy = "per_worker"

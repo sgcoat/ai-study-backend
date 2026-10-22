@@ -1,13 +1,14 @@
 node_modules/
 dist/
 work/
+outputs/
 .env
 .env.*
 !.env.example
 server/data/
 server/deploy/docker/server.env
 server/deploy/docker/backups/
-*.log
-.DS_Store
 supabase/.temp/
 supabase/.branches/
+*.log
+.DS_Store

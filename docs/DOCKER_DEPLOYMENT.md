@@ -6,6 +6,12 @@
 
 ## 구성
 
+### AI 제외 배포를 준비할 때
+
+`1.0.1` 이상 서버는 `AI_FEATURES_ENABLED=false`로 실제 AI 키 없이 production의 로그인·자료 관리 API를 실행할 수 있습니다. 새 배포의 `server.env.example`은 이 설정을 기본으로 합니다. 생성 요청은 `503 AI_DISABLED`를 반환하고, 외부 AI는 호출하지 않습니다. 실제 SMTP는 계속 필요합니다. 기존 환경 파일은 자동 변경되지 않습니다.
+
+현재 앱은 별도로 배포한 Supabase API를 사용합니다. 이 문서의 Docker 서버는 아직 실행하지 않았으며, 학교 서버 정보가 확보되면 [서버 인계 안내](SERVER_HANDOFF.md)의 `1.0.1` 절차를 사용합니다. 아래의 `1.0.0` 기록은 이전 릴리스 설명입니다.
+
 ```text
 Mac의 백엔드 소스 → GitHub 비공개 저장소 → GitHub Actions에서 빌드
                                               ↓
@@ -75,7 +81,7 @@ bash prepare.sh --image devcksgur/ai-study-backend:1.0.0
 docker login --username devcksgur
 ```
 
-생성된 `server.env`에 Gemini·SMTP 값을 직접 입력한 다음 시작합니다. 기존 로컬 `server/.env`를 자동 복사하지 않으므로 별도로 설정해야 합니다.
+생성된 `server.env`에 SMTP 값을 직접 입력한 다음 시작합니다. AI 제외 배포는 `1.0.1` 이상 이미지와 `AI_FEATURES_ENABLED=false`를 사용합니다. 기존 로컬 `server/.env`를 자동 복사하지 않으므로 별도로 설정해야 합니다.
 
 | 파일 | 용도 |
 | --- | --- |
@@ -86,7 +92,7 @@ docker login --username devcksgur
 
 `prepare.sh`는 없는 파일만 만들고 `AUTH_SECRET`을 무작위 생성합니다. 기존 파일과 키를 덮어쓰지 않습니다. `server.env`는 Compose의 raw 형식이므로 값에 따옴표를 추가하지 마세요. 공백·`$`도 원래 값 그대로 입력합니다. 파일을 공유하거나 Git에 추가하지 마세요.
 
-전체 앱은 `SERVER_MODE=full`, `EMAIL_PROVIDER=smtp`, `AI_PROVIDER=gemini` 및 유효한 Gemini 키·모델이 필요합니다. 모델 이름은 계정에서 사용 가능한 값으로 바꿀 수 있습니다. 인증만 배포하려면 `SERVER_MODE=auth`로 바꾸지만 이 모드에는 자료 API가 없습니다. 운영 모드에서 개발용 mock AI/console 이메일은 허용하지 않습니다.
+AI 제외 배포는 `SERVER_MODE=full`, `EMAIL_PROVIDER=smtp`, `AI_FEATURES_ENABLED=false`를 사용합니다. 실제 AI를 켜는 별도 작업에서는 `AI_FEATURES_ENABLED=true`와 실제 공급자의 키·모델이 필요합니다. 인증만 배포하는 `SERVER_MODE=auth`에는 자료 API가 없습니다. production에서 console 이메일은 허용하지 않으며, AI 기능이 켜진 full 모드에서 mock AI도 허용하지 않습니다.
 
 ```sh
 docker compose pull
