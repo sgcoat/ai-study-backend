@@ -1,0 +1,11 @@
+node_modules/
+dist/
+work/
+.env
+.env.*
+!.env.example
+server/data/
+server/deploy/docker/server.env
+server/deploy/docker/backups/
+*.log
+.DS_Store

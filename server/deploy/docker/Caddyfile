@@ -1,0 +1,11 @@
+{
+    admin off
+}
+
+{$APP_DOMAIN} {
+    reverse_proxy api:3000
+    header {
+        -Server
+        X-Content-Type-Options nosniff
+    }
+}

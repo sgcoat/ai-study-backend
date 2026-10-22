@@ -1,0 +1,9 @@
+# Only the backend build inputs are sent to the builder.
+**
+!Dockerfile
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!tsconfig.json
+!src/
+!src/**

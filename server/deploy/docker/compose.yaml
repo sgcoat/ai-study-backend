@@ -1,0 +1,47 @@
+name: ai-study-backend
+
+services:
+  api:
+    image: ${BACKEND_IMAGE:?Run prepare.sh to set BACKEND_IMAGE}
+    pull_policy: missing
+    env_file:
+      - path: ./server.env
+        format: raw
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      DATA_DIR: /data
+      TRUSTED_PROXY_IPS: ""
+    ports:
+      - "127.0.0.1:${API_PORT:-3000}:3000"
+    volumes:
+      - api-data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    stop_grace_period: 45s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${DOCKER_SUBNET:-172.30.26.0/24}
+
+volumes:
+  api-data:
