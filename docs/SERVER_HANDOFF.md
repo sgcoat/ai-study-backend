@@ -20,7 +20,7 @@
 ```sh
 git clone https://github.com/sgcoat/ai-study-backend.git
 cd ai-study-backend/server/deploy/docker
-bash prepare.sh --image devcksgur/ai-study-backend:1.0.1
+bash prepare.sh --image devcksgur/ai-study-backend@sha256:9be451fa979a50475629d573c32f6320b164fb440d4cbef8ef0e8d0903f891a0
 docker login --username devcksgur
 ```
 

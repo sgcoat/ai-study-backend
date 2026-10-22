@@ -2,6 +2,8 @@
 
 ## 첫 이미지 업로드 완료
 
+최신 AI 제외 배포 릴리스는 [1.0.1](DOCKER_RELEASE_1.0.1.md)이며 GitHub Actions 빌드·업로드를 마쳤습니다. 새 서버 실행에는 이 버전의 [서버 인계 안내](SERVER_HANDOFF.md)를 사용합니다.
+
 2026-10-22에 GitHub Actions에서 `devcksgur/ai-study-backend:1.0.0`을 비공개 Docker Hub 저장소에 업로드했습니다. AMD64·ARM64 manifest와 이미지 인덱스 digest를 CI와 Docker Hub에서 확인했습니다. [확정 이미지·배포 서버 실행 명령](DOCKER_RELEASE_1.0.0.md)을 참고하세요. 실제 배포 서버에서의 기동은 아직 진행하지 않았습니다.
 
 ## 구성
