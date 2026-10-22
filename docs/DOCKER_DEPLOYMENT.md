@@ -1,5 +1,9 @@
 # Docker Hub 배포
 
+## 첫 이미지 업로드 완료
+
+2026-10-22에 GitHub Actions에서 `devcksgur/ai-study-backend:1.0.0`을 비공개 Docker Hub 저장소에 업로드했습니다. AMD64·ARM64 manifest와 이미지 인덱스 digest를 CI와 Docker Hub에서 확인했습니다. [확정 이미지·배포 서버 실행 명령](DOCKER_RELEASE_1.0.0.md)을 참고하세요. 실제 배포 서버에서의 기동은 아직 진행하지 않았습니다.
+
 ## 구성
 
 ```text
@@ -122,7 +126,7 @@ docker compose -f compose.yaml -f compose.https.yaml ps
 
 Dockerfile은 Node 24의 다단계 빌드, 일반 사용자 실행, `/health` 상태 조회를 사용합니다. 빌드 문맥은 `.dockerignore` 허용 목록으로 제한했습니다. Compose는 읽기 전용 루트, 데이터 볼륨, 제한된 로그와 재시작 정책을 사용합니다.
 
-로컬에서 서버 TypeScript 빌드, 스크립트 문법, YAML 문법, 업로드 명령 미리보기를 확인했습니다. Mac에 Docker가 없어 실제 이미지 빌드·컨테이너 실행·Compose 의미 검증은 아직 수행하지 않았습니다. 이미지 업로드 완료는 GitHub Actions 성공과 레지스트리 태그/digest 확인 후 판단합니다. 실제 배포 서버·도메인 연결은 별도 단계입니다.
+로컬에서 서버 TypeScript 빌드, 스크립트 문법, YAML 문법, 업로드 명령 미리보기를 확인했습니다. GitHub Actions에서는 AMD64·ARM64 이미지 빌드·push와 레지스트리 manifest 확인을 통과했습니다. Docker Hub 비공개 저장소에도 `1.0.0`이 표시됩니다. Mac에 Docker가 없어 로컬 컨테이너 실행·Compose 의미 검증은 아직 수행하지 않았습니다. 실제 배포 서버에서의 기동·이메일/AI 동작과 도메인 연결은 별도 단계입니다.
 
 ## 공식 문서
 

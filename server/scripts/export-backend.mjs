@@ -19,6 +19,7 @@ if (relative(work, output).startsWith('..') || output === work) {
 const files = [
   '.github/workflows/publish-backend.yml',
   'docs/DOCKER_DEPLOYMENT.md',
+  'docs/DOCKER_RELEASE_1.0.0.md',
   'server/Dockerfile', 'server/.dockerignore', 'server/package.json',
   'server/pnpm-lock.yaml', 'server/pnpm-workspace.yaml', 'server/tsconfig.json',
   'server/.env.example', 'server/scripts/setup.mjs',
