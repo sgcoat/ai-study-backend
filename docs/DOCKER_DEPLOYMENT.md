@@ -35,7 +35,7 @@ git remote add origin https://github.com/sgcoat/ai-study-backend.git
 git push -u origin main
 ```
 
-GitHub 계정 인증이 필요하면 공식 GitHub CLI의 `gh auth login --hostname github.com --git-protocol https --web`과 `gh auth setup-git`을 사용하거나, GitHub Desktop에서 이 폴더를 추가해 같은 비공개 저장소로 업로드합니다. 로그인·권한 승인은 사용자가 직접 진행합니다.
+GitHub 계정 인증이 필요하면 공식 GitHub CLI의 `gh auth login --hostname github.com --git-protocol https --web --scopes workflow`과 `gh auth setup-git`을 사용하거나, GitHub Desktop에서 이 폴더를 추가해 같은 비공개 저장소로 업로드합니다. 로그인·권한 승인은 사용자가 직접 진행합니다.
 
 ## 2. Docker Hub 토큰 등록
 
