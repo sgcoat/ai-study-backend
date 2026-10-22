@@ -9,3 +9,5 @@ server/deploy/docker/server.env
 server/deploy/docker/backups/
 *.log
 .DS_Store
+supabase/.temp/
+supabase/.branches/

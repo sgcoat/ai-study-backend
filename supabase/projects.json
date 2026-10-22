@@ -1,0 +1,14 @@
+{
+  "supabase": {
+    "projectName": "ai-study-backend",
+    "projectRef": "jqhivsrfrkycfjefgoam",
+    "url": "https://jqhivsrfrkycfjefgoam.supabase.co",
+    "region": "ap-northeast-2",
+    "plan": "free"
+  },
+  "firebase": {
+    "projectName": "AI Study",
+    "projectId": "ai-study-97811",
+    "plan": "spark"
+  }
+}
